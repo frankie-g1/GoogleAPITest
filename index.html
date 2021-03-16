@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Google Map</title>
+  <style>
+  #map{
+    height:400px;
+    width:100%;
+  }
+  </style>
+</head>
+<body>
+  <h1>My Google Map</h1>
+  <div id="map"</div>
+  <script>
+    function initMap()
+    {  //Map Options
+        var options =
+        {
+          zoom:8,
+          center:{lat:42.3601, lng:-71.0589}
+        }
+        //New map
+        var map = new google.maps.Map(document.getElementById("map"), options);
+        //listen for click on <map>
+        google.maps.event.addListener(map, 'click', function(event){
+          addMarker({coords:event.latLng});
+        });
+
+        /*
+        //Add marker
+        var marker = new google.maps.Marker({
+          position:{lat:42.4668, lng:-70.9495},
+          map:map
+        });
+
+        var infoWindow = new google.maps.InfoWindow({
+          content:'<h1>Lynn MA</h1>'
+        });
+
+        // Add listener to marker obj in web page, function is google Map API's InfoWindow function ("open")
+        marker.addListener('click', function(){
+          infoWindow.open(map, marker);
+        });
+        */
+
+        // Ceate an array of Markers
+
+        var markers = [
+          {
+            coords:{lat:42.3601, lng:-71.0589},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            content:'<h1>Lynn MA</h1>'
+          },
+          {
+            coords:{lat:42.8584, lng:-70.9300},
+            content:'<h1>Amesbury MA I think?</h1>'
+          }
+        ];
+
+        // Loop thru to add markers to page
+        for(let i = 0; i < markers.length; i++)
+        {
+          addMarker(markers[i]);
+        }
+
+        // Add Marker function
+        function addMarker(props){
+          var marker = new google.maps.Marker({
+            position:props.coords,
+            map:map,
+            //icon:props.iconImage Potentially undefined
+          });
+
+          //Check for custom icon
+          if(props.iconImage)
+          {
+            //set icon Image
+            marker.setIcon(props.iconImage);
+          }
+
+          if(props.content)
+          {
+            //Add info window for each flag / marker / beachflag
+            var infoWindow = new google.maps.InfoWindow({
+              content:props.content
+            })
+            // Add listener to marker obj in web page, function is google Map API's InfoWindow function ("open")
+            marker.addListener('click', function(){
+              infoWindow.open(map, marker);
+            });
+          }
+
+
+        }
+
+    }
+
+  </script>
+
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB679wqjO73yjk4jxbr5jUbruvpco2c4k&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+
+</body>
+</html>
